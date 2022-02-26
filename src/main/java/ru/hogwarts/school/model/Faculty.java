@@ -8,11 +8,6 @@ public class Faculty {
     private String name;
     private String color;
 
-    public Faculty(String name, String color) {
-        this.name = name;
-        this.color = color;
-    }
-
     public Long getId() {
         return id;
     }
