@@ -1,9 +1,12 @@
 package ru.hogwarts.school.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
 
+import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -22,22 +25,31 @@ public class StudentController {
     }
 
     @GetMapping("{id}")
-    public Student getStud(@PathVariable long id) {
-        return studentService.findStudent(id);
+    public ResponseEntity<Student> getStud(@PathVariable long id) {
+        Student student = studentService.findStudent(id);
+        if (student == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(student);
     }
 
     @PutMapping
-    public Student changeStud(@RequestBody Student student) {
-        return studentService.updateStud(student);
+    public ResponseEntity<Student> changeStud(@RequestBody Student student) {
+        Student foundStudent = studentService.updateStud(student);
+        if (foundStudent == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        return ResponseEntity.ok(foundStudent);
     }
 
     @DeleteMapping("{id}")
-    public Student deleteStud(@PathVariable long id) {
-        return studentService.removeStud(id);
+    public ResponseEntity<Student> deleteStud(@PathVariable long id) {
+        studentService.removeStud(id);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("{age}")
-    public List<Student> getStudForAge(@PathVariable int age) {
-        return studentService.getForAge(age);
+    public ResponseEntity<Collection<Student>> getStudForAge(@PathVariable int age) {
+        return ResponseEntity.ok(studentService.getForAge(age));
     }
 }

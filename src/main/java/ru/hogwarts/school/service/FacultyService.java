@@ -1,51 +1,52 @@
 package ru.hogwarts.school.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repository.FacultyRepository;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
 @Service
 public class FacultyService {
 
-    private final HashMap<Long, Faculty> facultyMap;
-    private long id = 0;
+    private final FacultyRepository facultyRepository;
 
-    public FacultyService() {
-        facultyMap = new HashMap<>();
+    public FacultyService(FacultyRepository facultyRepository) {
+        this.facultyRepository = facultyRepository;
     }
 
+
     public Faculty addFaculty(Faculty faculty) {
-        faculty.setId(++id);
-        facultyMap.put(id, faculty);
-        return faculty;
+      return facultyRepository.save(faculty);
     }
 
     public Faculty findFaculty(long id) {
-        return facultyMap.get(id);
+        return facultyRepository.findById(id).get();
     }
 
     public Faculty updateFaculty(Faculty faculty) {
-        facultyMap.put(faculty.getId(), faculty);
-        return faculty;
+        return facultyRepository.save(faculty);
     }
 
-    public Faculty removeFaculty(long id) {
-        return facultyMap.remove(id);
+    public void removeFaculty(long id) {
+
+        facultyRepository.getById(id);
     }
 
-    public List<Faculty> getForColor(String color) {
-        List<Faculty> faculties = new ArrayList<>();
-        for (long id : facultyMap.keySet()) {
-            Faculty faculty = facultyMap.get(id);
+    public Collection<Faculty> getForColor(String color) {
+        List<Faculty> facultiesForColor = new ArrayList<>();
+        for (Faculty faculty : facultyRepository.findAll())
+        {
             if (faculty.getColor().equals(color)) {
-                faculties.add(faculty);
+                facultiesForColor.add(faculty);
             }
         }
-        return faculties;
+        return facultiesForColor;
     }
 
 }

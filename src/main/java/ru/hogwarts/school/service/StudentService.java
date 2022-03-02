@@ -1,50 +1,50 @@
 package ru.hogwarts.school.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
 @Service
 public class StudentService {
 
-    private final HashMap<Long, Student> studentMap;
-    private long id = 0;
+    private final StudentRepository studentRepository;
 
-    public StudentService() {
-        studentMap = new HashMap<>();
+    public StudentService(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
     }
 
     public Student addStudent(Student student) {
-        student.setId(++id);
-        studentMap.put(id, student);
-        return student;
+        return studentRepository.save(student);
     }
 
     public Student findStudent(long id) {
-        return studentMap.get(id);
+
+        return studentRepository.findById(id).get();
     }
 
     public Student updateStud(Student student) {
-        studentMap.put(student.getId(), student);
-        return student;
+        return studentRepository.save(student);
     }
 
-    public Student removeStud(long id) {
-        return studentMap.remove(id);
+    public void removeStud(long id) {
+
+        studentRepository.deleteById(id);
     }
 
-    public List<Student> getForAge(int age) {
-        List<Student> students = new ArrayList<>();
-        for (long id : studentMap.keySet()) {
-            Student student = studentMap.get(id);
+    public Collection<Student> getForAge(int age) {
+        List<Student> studentsForAge = new ArrayList<>();
+        for (Student student:studentRepository.findAll()) {
             if (student.getAge() == age) {
-                students.add(student);
+                studentsForAge.add(student);
             }
         }
-        return students;
+        return studentsForAge;
     }
 
 }
