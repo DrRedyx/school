@@ -39,7 +39,11 @@ public class FacultyService {
     }
 
     public Faculty getForColor(String color) {
-        return facultyRepository.findByColor(color);
+        return facultyRepository.findByColorIgnoreCase(color);
+    }
+
+    public Faculty getForName(String name) {
+        return facultyRepository.findByNameIgnoreCase(name);
     }
 
 }
