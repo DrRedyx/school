@@ -38,13 +38,7 @@ public class StudentService {
     }
 
     public Collection<Student> getForAge(int age) {
-        List<Student> studentsForAge = new ArrayList<>();
-        for (Student student:studentRepository.findAll()) {
-            if (student.getAge() == age) {
-                studentsForAge.add(student);
-            }
-        }
-        return studentsForAge;
+        return studentRepository.findByAge(age);
     }
 
 }

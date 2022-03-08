@@ -38,15 +38,8 @@ public class FacultyService {
         facultyRepository.getById(id);
     }
 
-    public Collection<Faculty> getForColor(String color) {
-        List<Faculty> facultiesForColor = new ArrayList<>();
-        for (Faculty faculty : facultyRepository.findAll())
-        {
-            if (faculty.getColor().equals(color)) {
-                facultiesForColor.add(faculty);
-            }
-        }
-        return facultiesForColor;
+    public Faculty getForColor(String color) {
+        return facultyRepository.findByColor(color);
     }
 
 }
