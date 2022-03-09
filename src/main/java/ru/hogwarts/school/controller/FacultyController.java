@@ -47,8 +47,8 @@ public class FacultyController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("{color}")
-    public ResponseEntity<Faculty> getFacultyForColor(@PathVariable String color) {
-        return ResponseEntity.ok(facultyService.getForColor(color));
+    @GetMapping
+    public ResponseEntity<Faculty> getFacultyForColorOrName(@PathVariable(required = false) String color, @PathVariable(required = false) String name) {
+        return ResponseEntity.ok(facultyService.getForColorOrName(color, name));
     }
 }
