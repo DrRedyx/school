@@ -68,7 +68,7 @@ public class AvatarService {
         try (InputStream is = Files.newInputStream(filePath);
              BufferedInputStream bis = new BufferedInputStream(is, 1024);
              ByteArrayOutputStream baos = new ByteArrayOutputStream()){
-            BufferedImage bufferedImage = ImageIO.read(bis);
+             BufferedImage bufferedImage = ImageIO.read(bis);
 
             int height = bufferedImage.getHeight() / (bufferedImage.getWidth() / 100);
             BufferedImage preview = new BufferedImage(100, height, bufferedImage.getType());
