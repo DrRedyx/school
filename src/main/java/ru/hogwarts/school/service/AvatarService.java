@@ -1,6 +1,8 @@
 package ru.hogwarts.school.service;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,7 @@ import static java.nio.file.StandardOpenOption.CREATE_NEW;
 @Transactional
 public class AvatarService {
 
+    Logger logger = LoggerFactory.getLogger(AvatarService.class);
     @Value("${student.avatar.dir.path}")
     private String avatarDir;
 
@@ -36,6 +39,7 @@ public class AvatarService {
     }
 
     public void uploadAvatar(Long studId, MultipartFile file) throws IOException {
+        logger.info("Load avatar to db");
         Student student = studentService.findStudent(studId);
 
         Path filePath = Path.of(avatarDir, studId + "." + getExist(file.getOriginalFilename()));
@@ -60,10 +64,12 @@ public class AvatarService {
     }
 
     public Avatar findAvatar(long id) {
+        logger.info("Find avatar of 1 student");
         return avatarRepository.findByStudentId(id).orElse(new Avatar());
     }
 
     public List<Avatar> findAvatar(Integer pageNumber, Integer pageSize) {
+        logger.info("Find avatars");
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize);
         return avatarRepository.findAll(pageRequest).getContent();
     }
@@ -73,6 +79,7 @@ public class AvatarService {
     }
 
     private byte[] generatePreview (Path filePath) throws IOException {
+        logger.info("Load preview from db");
         try (InputStream is = Files.newInputStream(filePath);
              BufferedInputStream bis = new BufferedInputStream(is, 1024);
              ByteArrayOutputStream baos = new ByteArrayOutputStream()){

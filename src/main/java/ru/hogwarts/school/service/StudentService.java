@@ -1,5 +1,7 @@
 package ru.hogwarts.school.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Student;
@@ -13,6 +15,8 @@ import java.util.List;
 @Service
 public class StudentService {
 
+    Logger logger = LoggerFactory.getLogger(StudentService.class);
+
     private final StudentRepository studentRepository;
 
     public StudentService(StudentRepository studentRepository) {
@@ -20,40 +24,47 @@ public class StudentService {
     }
 
     public Student addStudent(Student student) {
+        logger.info("Method created student");
         return studentRepository.save(student);
     }
 
     public Student findStudent(long id) {
-
+        logger.info("Method find student");
         return studentRepository.findById(id).get();
     }
 
     public Student updateStud(Student student) {
+        logger.info("Method rework student");
         return studentRepository.save(student);
     }
 
     public void removeStud(long id) {
-
+        logger.info("Method delete student");
         studentRepository.deleteById(id);
     }
 
     public Collection<Student> getForAge(int age) {
+        logger.info("Method get student by age");
         return studentRepository.findByAge(age);
     }
 
     public Collection<Student> getForAgeBetween(int min, int max) {
+        logger.info("Method get students between age");
         return studentRepository.findByAgeBetween(min, max);
     }
 
     public Integer getNumberOfStudents() {
+        logger.info("Method get number of students");
         return studentRepository.getNumberOfStudents();
     }
 
     public Integer getAverageAge() {
+        logger.info("Method get average age of students");
         return studentRepository.getAverageAgeStudents();
     }
 
     public List<Student> getLast5Students() {
+        logger.info("Method get last 5 students");
         return studentRepository.getLastStudents();
     }
 }
