@@ -51,4 +51,9 @@ public class FacultyController {
     public ResponseEntity<Faculty> getFacultyForColorOrName(@PathVariable(required = false) String color, @PathVariable(required = false) String name) {
         return ResponseEntity.ok(facultyService.getForColorOrName(color, name));
     }
+
+    @GetMapping("/longer-name")
+    public ResponseEntity<String> getLongerFacultyName() {
+        return ResponseEntity.ok(facultyService.getLongerFacultyName());
+    }
 }

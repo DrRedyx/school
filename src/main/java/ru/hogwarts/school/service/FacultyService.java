@@ -8,10 +8,7 @@ import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class FacultyService {
@@ -48,6 +45,14 @@ public class FacultyService {
     public Faculty getForColorOrName(String color, String name) {
         logger.info("Get faculty by name or color");
         return facultyRepository.findByColorIgnoreCaseOrNameIgnoreCase(color, name);
+    }
+
+    public String getLongerFacultyName() {
+        return facultyRepository.findAll().stream().
+                map(Faculty::getName).
+                max(Comparator.comparing(String::length)).
+                orElse(null);
+
     }
 
 }
