@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
+    public Object flag = new Object();
 
     Logger logger = LoggerFactory.getLogger(StudentService.class);
 
@@ -82,5 +83,39 @@ public class StudentService {
                 mapToInt(Student::getAge).
                 average().
                 orElse(0);
+    }
+
+    public void getAllStudentForRandomWithThread() {
+        List<Student> students = studentRepository.findAll();
+            System.out.println(students.get(1).getName());
+            System.out.println(students.get(2).getName());
+            new Thread(()-> {
+                System.out.println(students.get(3).getName());
+                System.out.println(students.get(4).getName());
+            }).start();
+            new Thread(()-> {
+                System.out.println(students.get(5).getName());
+                System.out.println(students.get(6).getName());
+            }).start();
+    }
+
+    public void getAllStudentForSynchrWithThread() {
+        printAnyStudent(1);
+        printAnyStudent(2);
+        new Thread(()-> {
+            printAnyStudent(3);
+            printAnyStudent(4);
+        }).start();
+        new Thread(()-> {
+            printAnyStudent(5);
+            printAnyStudent(6);
+        }).start();
+    }
+
+    public void printAnyStudent(Integer id) {
+        List<Student> students = studentRepository.findAll();
+        synchronized (flag) {
+            System.out.println(students.get(id).getName());
+        }
     }
 }

@@ -77,4 +77,16 @@ public class StudentController {
         return ResponseEntity.ok(studentService.getAllStudSortedByNameAndStartedByLetter());
     }
 
+    @GetMapping("/thread")
+    public ResponseEntity getStudByThread() {
+        studentService.getAllStudentForRandomWithThread();
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/synchronization_thread")
+    public ResponseEntity getStudBySynchrThread() {
+        studentService.getAllStudentForSynchrWithThread();
+        return ResponseEntity.ok().build();
+    }
+
 }
